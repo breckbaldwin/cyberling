@@ -74,6 +74,12 @@ Berk Atil, Sarp Aykent, Alexa Chittams, Lisheng Fu, Rebecca J. Passonneau, Evan 
 ![Figure 3](img/Figure3.png)
 
 ---
+# Consequences of Non-determinism at Byte Level
+
+- Unit testing no longer possible as commonly done
+- 80:20 Rule broken
+- System complexity increase
+---
 
 ![Figure 4](img/Figure4.png)
 
@@ -85,8 +91,21 @@ Berk Atil, Sarp Aykent, Alexa Chittams, Lisheng Fu, Rebecca J. Passonneau, Evan 
 - Best Possible, Median, Worst Possible Accuracy over 10 runs
 
 ---
-# But Nobody Cares
+# But Nobody Cares...
 
+Cause: 
+- Trivial fix is to run single batch
+- Likely mechanism is packing inputs to LLMs on hosted instances
+- No evidence of GPU instability
+- Powerful economic motivators to pack jobs
+
+"Not caring" evidence:
+- Developers act like I am telling them to floss daily
+- Hosting companies have not prioritized or promoted determinism
+- Llama.cpp has open issues around this
+
+---
+# But Why is Non-determinism Tolerated? 
 - Benchmark numbers are for marketing, not engineering
 - Randomness helps with the reality/perception of intelligence:
 
@@ -101,21 +120,18 @@ Berk Atil, Sarp Aykent, Alexa Chittams, Lisheng Fu, Rebecca J. Passonneau, Evan 
 
 - Determinism does not exist across any task/model
 - The impact on accuracy (performance) can be profound
-- Trivial fix is to run single batch
-    + Likely mechanism is packing inputs to LLMs on hosted instances
 - Nobody cares...hopefully NIST does
 ---
 
 ![Table 2](img/Table2.png)
 
-
 ---
 
-# Cyber Linguistics
-
-## Engineering with language inputs and outputs of LLMs
+# Engineering with LLMs
 
 - LLMs have stabilized as an amazing technology, but...
+    + Language in/language out
+    + Schemas are still defined in language terms
     + Poorly behaved neighbors to OSs, DBs, APIs
 - LLMs must transition to being one of many tools in system building
     + Understandability
@@ -149,16 +165,17 @@ Some starting points:
 ---
 # College Math: 100 Questions x GPT-4o (Toy Problem)
 
-- Round 0 Accuracy: `Prompts`:
-    + 74%: `Chomsky = CHOMSKY_PREFIX + COMMON_SUFFIX + question`
-    + 47%: `Schema  = JSON_PREFIX +                    question`
-    + 56%: `Raw     =                                  question`
-    + 58%: `Generic = NO_LINGUISTICS + COMMON_SUFFIX + question`
-    + 44%: `Grice   = GRICE_PREFIX +   COMMON_SUFFIX + question`
+- `Prompts`:
+    + `Generic = GENERIC         + COMMON_SUFFIX + question`
+    + `Grice   = GRICE_PREFIX    + COMMON_SUFFIX + question`
+    + `Chomsky = CHOMSKY_PREFIX  + COMMON_SUFFIX + question`
+    + `Schema  = JSON_PREFIX     +                 question`
+    + `Raw     =                                   question`
+
 
 ---
 # Prefix Prompts
-- `NO_LINGUISTICS` = "Please answer the following question,"
+- `GENERIC` = "Please answer the following question,"
 - `GRICE_PREFIX` = "Please answer the following question while adhering to Gricean Maxims: Particularly the Maxim of Manner: Be clear—avoid obscurity and ambiguity, be brief and orderly. A bit more context,"
 - `CHOMSKY_PREFIX` = "Please answer the following question while adhering to Chomsky’s Competence–Performance distinction: Maximize knowledge (competence) and minimize performance errors. A bit more context,"
 
@@ -205,13 +222,13 @@ Remove rubric from round n + 1 if output round n != first round
 ---
 # Observations--Remember Toy Problem
 - Grice mattered--one token, best answer determinism, worst accuracy
+    + Remember that `COMMMON_SUFFIX` had all the constraints
 - Schema mattered-- 13 tokens, best string and answer determinism, worst accuracy
 - Generic/Raw-- varied tokens, a middling mess
-- Shorter-> more deterministic: 
-    + If the non-determinism is a function of token choice, the more tokens picked the more chance of a different choice being made. 
-- Longer-> more/better inference:
-    + Longer contexts allow the LLM to better infer the correct answer--basis of COT (chain of thought) heuristics. 
-- Tell your LLM Chomsky is watching and performance goes up 30%???
+- Shorter-> more deterministic
+- Longer-> more/better inference
+- Chomsky mattered: 
+    + Mention Chomsky and beat Grice by 30%???
 
 ---
 # Conclusions
@@ -220,7 +237,6 @@ Remove rubric from round n + 1 if output round n != first round
 - Determinism does not exist for LLMs in practice
     + Nobody cares but should
 - Need a new field "Cyber Linguistics"
-    + Clean up the mess of current NLP interfaces to LLMs
     + Make LLMs engineerable components
     + Bring existing domains, like pragmatics, to help
 
@@ -231,8 +247,9 @@ Remove rubric from round n + 1 if output round n != first round
 ---
 
 - Anyone wanting to participate in Cyber Linguistic activity please reach out
-    + Reddit forum
-    + Journal
+    + Manifesto--written by GPT-4o
+        - https://www.linkedin.com/pulse/long-road-agi-cyber-linguistics-breck-baldwin-tm36e/
+    + ??Journal??
     + Contributing experiments
 
 All data/software is available off of my splash page: https://breckbaldwin.github.io

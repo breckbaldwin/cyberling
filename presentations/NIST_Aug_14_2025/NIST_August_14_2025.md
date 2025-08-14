@@ -165,7 +165,7 @@ Some starting points:
 ---
 # College Math: 100 Questions x GPT-4o (Toy Problem)
 
-- `Prompts`:
+-`Prompts`:
     + `Generic = GENERIC         + COMMON_SUFFIX + question`
     + `Grice   = GRICE_PREFIX    + COMMON_SUFFIX + question`
     + `Chomsky = CHOMSKY_PREFIX  + COMMON_SUFFIX + question`
